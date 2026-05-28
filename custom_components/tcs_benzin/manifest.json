@@ -1,7 +1,7 @@
 {
   "domain": "tcs_benzin",
   "name": "TCS Benzinpreis Schweiz",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "config_flow": true,
   "documentation": "https://github.com/Zeronova/HA_tcs_benzin",
   "issue_tracker": "https://github.com/Zeronova/HA_tcs_benzin/issues",
