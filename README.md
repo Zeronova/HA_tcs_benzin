@@ -2,15 +2,15 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
 
-Home Assistant Integration für Schweizer Tankstellenpreise, basierend auf dem TCS Benzinpreis-Radar.
+Home Assistant Integration für Schweizer Tankstellenpreise, basierend auf dem [TCS Benzinpreis-Radar](https://benzin.tcs.ch/).
 
-Die Integration erstellt für jede konfigurierte Tankstelle ein **Gerät** mit mehreren **Sensoren** – einen pro angebotener Benzinsorte.
+Die Integration erstellt für jede konfigurierte Tankstelle ein **Gerät** mit Sensoren – einen pro angebotener Benzinsorte, plus Stationsinfos.
 
 ## Wozu es da ist
 
 Zeigt die aktuellen Benzinpreise von Schweizer Tankstellen direkt in Home Assistant an. Ideal für Dashboards, Automatisierungen (z.B. Benachrichtigung bei Preisänderung) und Energie-Monitoring.
 
-Die Preisdaten stammen aus dem [TCS Benzinpreis-Radar](https://benzin.tcs.ch/) – einer Public-Cloud-Funktion der TCS-Website, die ohne Authentifizierung genutzt werden kann.
+Die Preisdaten stammen aus einer öffentlichen Cloud-Funktion der TCS-Website, die ohne Authentifizierung genutzt werden kann.
 
 ## Installation
 
@@ -44,31 +44,33 @@ Du kannst auch den ganzen Link einfügen – die Integration extrahiert die ID a
 
 ## Sensoren
 
-| Sensor | Inhalt |
-|--------|--------|
-| Bleifrei 95 (SP95) | Preis pro Liter |
-| Bleifrei 98+ (SP98) | Preis pro Liter |
-| Diesel | Preis pro Liter |
-| Premium-Diesel | Preis pro Liter |
-| LPG (Autogas) | Preis pro Liter |
-| Ethanol 85 (E85) | Preis pro Liter |
-| Adblue | Preis pro Liter |
-| HVO100 | Preis pro Liter |
-| Wasserstoff (H2) | Preis pro Liter |
-| Erdgas (CNG) | Preis pro Liter |
+### Preissensoren (pro Treibstoffsorte)
 
 Nicht alle Tankstellen bieten alle Sorten an – es werden nur die tatsächlich verfügbaren Sensoren erstellt.
 
-### Attribute
+- **Bleifrei 95** (SP95) – Preis pro Liter
+- **Bleifrei 98+** (SP98) – Preis pro Liter
+- **Diesel** – Preis pro Liter
+- **Premium-Diesel** – Preis pro Liter
+- **LPG** (Autogas) – Preis pro Liter
+- **Ethanol 85** (E85) – Preis pro Liter
+- **Adblue** – Preis pro Liter
+- **HVO100** – Preis pro Liter
+- **Wasserstoff** (H2) – Preis pro Liter
+- **Erdgas** (CNG) – Preis pro Liter
 
-Jeder Sensor enthält zusätzlich:
+#### Attribute pro Preissensor
+
 - `fuel_type_display` – Anzeigename der Sorte
-- `brand` – Marke der Tankstelle (z.B. AVIA, BP, SHELL)
-- `address` – Adresse der Tankstelle
 - `fiability_level` – Datenqualität (CONFIDENT, MODERATE, LOW, OLD_LAST_UPDATE)
 - `fiability_label` – Beschriftung auf Deutsch
 - `last_price_update` – Zeitstempel der letzten Preisaktualisierung
 - `num_recent_price_updates` – Anzahl kürzlicher Updates
+
+### Stationssensoren (einmalig pro Tankstelle)
+
+- **Marke** – Markenname (z.B. AVIA, BP, SHELL). Das Brand-Logo wird automatisch als `entity_picture` geladen: `https://benzin.tcs.ch/images/brands/icons/{brand}.webp`
+- **Adresse** – Strassenadresse der Tankstelle
 
 ## Datenquelle
 
