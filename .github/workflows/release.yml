@@ -1,0 +1,23 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create ZIP
+        run: |
+          cd custom_components/tcs_benzin
+          zip -r ../../tcs_benzin.zip ./
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: tcs_benzin.zip
+          generate_release_notes: true

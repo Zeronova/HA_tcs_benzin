@@ -1,0 +1,31 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add Gas Station",
+        "description": "Enter the station ID or the full TCS URL.\n\nExample ID: `zpIcUjj4Ct2id9PXp2Wp`\nOr full URL: `https://benzin.tcs.ch/de/station/zpIcUjj4Ct2id9PXp2Wp/SP95`",
+        "data": {
+          "station_id": "Station ID or URL",
+          "scan_interval": "Update interval (minutes)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to TCS API. Check the ID.",
+      "invalid_station_id": "Invalid station ID. Enter an ID or a TCS link."
+    },
+    "abort": {
+      "already_configured": "This station is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "TCS Benzin Options",
+        "data": {
+          "scan_interval": "Update interval (minutes)"
+        }
+      }
+    }
+  }
+}

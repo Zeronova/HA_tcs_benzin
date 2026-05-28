@@ -1,0 +1,31 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Tankstelle hinzufügen",
+        "description": "Gib die Tankstellen-ID oder den TCS-Link ein.\n\nBeispiel-ID: `zpIcUjj4Ct2id9PXp2Wp`\nOder ganzer Link: `https://benzin.tcs.ch/de/station/zpIcUjj4Ct2id9PXp2Wp/SP95`",
+        "data": {
+          "station_id": "Tankstellen-ID oder Link",
+          "scan_interval": "Aktualisierungsintervall (Minuten)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung zum TCS-API fehlgeschlagen. Prüfe die ID.",
+      "invalid_station_id": "Ungültige Tankstellen-ID. Gib eine ID oder einen TCS-Link ein."
+    },
+    "abort": {
+      "already_configured": "Diese Tankstelle ist bereits konfiguriert."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "TCS Benzinpreis Optionen",
+        "data": {
+          "scan_interval": "Aktualisierungsintervall (Minuten)"
+        }
+      }
+    }
+  }
+}
