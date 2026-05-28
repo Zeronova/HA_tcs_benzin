@@ -24,12 +24,18 @@ async def async_setup_entry(
     coordinator = hass.data[DOMAIN][entry.entry_id]
     station_id = entry.data.get("station_id")
 
-    entities = []
+    entities: list = []
+
+    # Fuel price sensors
     for fuel_type in FUEL_TYPES:
         if fuel_type in coordinator.data.get("prices", {}):
             entities.append(
                 TcsBenzinSensor(coordinator, station_id, fuel_type)
             )
+
+    # Station metadata sensors (created once per station)
+    entities.append(TcsBenzinBrandSensor(coordinator, station_id))
+    entities.append(TcsBenzinAddressSensor(coordinator, station_id))
 
     if entities:
         async_add_entities(entities)
@@ -109,3 +115,73 @@ class TcsBenzinSensor(CoordinatorEntity, SensorEntity):
             attrs["num_recent_price_updates"] = num_updates
 
         return attrs
+
+
+class TcsBenzinBrandSensor(CoordinatorEntity, SensorEntity):
+    """Brand of the gas station with logo."""
+
+    def __init__(self, coordinator, station_id: str) -> None:
+        """Initialize the brand sensor."""
+        super().__init__(coordinator)
+        self._station_id = station_id
+        self._attr_name = "Marke"
+        self._attr_unique_id = f"{station_id}_brand"
+        self._attr_icon = "mdi:storefront-outline"
+        self._attr_entity_registry_enabled_default = True
+
+    @property
+    def device_info(self) -> dict:
+        """Return device info."""
+        data = self.coordinator.data
+        return {
+            "identifiers": {(DOMAIN, self._station_id)},
+            "name": data.get("name", f"Tankstelle {self._station_id}"),
+            "manufacturer": data.get("brand", "TCS"),
+            "model": "Tankstelle",
+            "sw_version": "v0.1.0",
+            "configuration_url": f"https://benzin.tcs.ch/de/station/{self._station_id}",
+        }
+
+    @property
+    def native_value(self) -> str | None:
+        """Return the brand name."""
+        return self.coordinator.data.get("brand") or "Unbekannt"
+
+    @property
+    def entity_picture(self) -> str | None:
+        """Return the brand logo URL."""
+        brand = self.coordinator.data.get("brand")
+        if brand:
+            return f"https://benzin.tcs.ch/images/brands/icons/{brand.lower()}.webp"
+        return None
+
+
+class TcsBenzinAddressSensor(CoordinatorEntity, SensorEntity):
+    """Address of the gas station."""
+
+    def __init__(self, coordinator, station_id: str) -> None:
+        """Initialize the address sensor."""
+        super().__init__(coordinator)
+        self._station_id = station_id
+        self._attr_name = "Adresse"
+        self._attr_unique_id = f"{station_id}_address"
+        self._attr_icon = "mdi:map-marker"
+        self._attr_entity_registry_enabled_default = True
+
+    @property
+    def device_info(self) -> dict:
+        """Return device info."""
+        data = self.coordinator.data
+        return {
+            "identifiers": {(DOMAIN, self._station_id)},
+            "name": data.get("name", f"Tankstelle {self._station_id}"),
+            "manufacturer": data.get("brand", "TCS"),
+            "model": "Tankstelle",
+            "sw_version": "v0.1.0",
+            "configuration_url": f"https://benzin.tcs.ch/de/station/{self._station_id}",
+        }
+
+    @property
+    def native_value(self) -> str | None:
+        """Return the address."""
+        return self.coordinator.data.get("address") or "Unbekannt"
